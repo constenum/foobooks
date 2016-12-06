@@ -7,6 +7,17 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
+    /* Relationship Methods */
+
+    /**
+	*
+	*/
+    public function books() {
+        return $this->hasMany('App\Book');
+    }
+
+    /* End Relationship Methods */
+
     use Notifiable;
 
     /**

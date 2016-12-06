@@ -7,7 +7,7 @@
 Route::get('/books', 'BookController@index')->name('books.index');
 
 # Show a form to create a new book
-Route::get('/books/create', 'BookController@create')->name('books.create');
+Route::get('/books/create', 'BookController@create')->name('books.create')->middleware('auth');
 
 # Process the form to create a new book
 Route::post('/books', 'BookController@store')->name('books.store');
@@ -120,7 +120,6 @@ Route::get('/debug', function() {
 
 });
 
-
 /**
 * Main homepage
 */
@@ -131,3 +130,28 @@ Route::get('/debug', function() {
 
 # New as of Lecture 11, just use the "book index" as the homepage
 Route::get('/', 'BookController@index');
+
+/* USER AUTHORIZATION */
+
+/* Generates authorization routes (many routes) */
+Auth::routes();
+
+/* Create logout get route (instead of post which requires a form) */
+Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
+
+/* Home route set through make:auth - created in addition to Auth::routes(); */
+Route::get('/home', 'HomeController@index');
+
+/* For Test User Login Only */
+Route::get('/show-login-status', function() {
+
+    # You may access the authenticated user via the Auth facade
+    $user = Auth::user();
+
+    if($user)
+        dump($user->toArray());
+    else
+        dump('You are not logged in.');
+
+    return;
+});
